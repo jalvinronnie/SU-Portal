@@ -1,0 +1,42 @@
+{% block title %}
+<title>Login - Students' Union Portal </title>
+{% load static %}
+<link rel="stylesheet" href="{% static "app/stylesheets/home.css" %}">
+{% endblock %}
+
+{% block content %}
+<div id="login-con">
+
+    <div id="zoom-it">
+
+    </div>
+    <div id="blur-it-all">
+
+    </div>
+    <div id="runningoutofnames">
+
+        <div id="login-failed-message">
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+
+        <div id="phew">
+            <h1>Students' Union Portal</h1>
+            <a href="/"> / Home</a>
+        </div>
+        <form id="login-form" method="post">
+            {% csrf_token %}
+            {# {{ form.as_p }} #}
+            {# <input type="submit" value="Login"> #}
+            {# <p id="hi">- or -</p> #}
+            <a href="{% url 'social:begin' 'google-oauth2' %}"><h3>Login with Google</h3></a>
+        </form>
+    </div>
+
+</div
+{% endblock %}
