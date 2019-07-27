@@ -18,6 +18,4 @@ To deactivate the virtualenv: `deactivate`.
 Also, whenever a new dependency is added to the `requirements.txt`
 file, you will need to run `tools/setup` again.
 
-## Discussion
-
-~~We hang out on https://crux-bphc.slack.com stream #suportal.~~ That was for the initial development only. From now on, the main discussion would be via the issue tracker for needed features/bugs.
+##
