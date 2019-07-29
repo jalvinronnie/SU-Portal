@@ -1,5 +1,5 @@
-from simpleticket.models import Project
 from simpleticket.models import Priority
+from simpleticket.models import Project
 from simpleticket.models import Status
 from simpleticket.models import Ticket
 from simpleticket.models import TicketComment

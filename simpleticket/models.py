@@ -1,10 +1,9 @@
-from django.db import models
 from django.contrib.auth import get_user_model
+from django.db import models
 from django.db.models import Sum
-from django.conf import settings
-
 
 User = get_user_model()
+
 
 class Project(models.Model):
     name = models.CharField(max_length=32)
@@ -26,7 +25,8 @@ class Project(models.Model):
         users = self.active_users()
         timemap = {}
         for user in users:
-            timemap[user] = Ticket.objects.filter(project=self, assigned_to=user).aggregate(Sum('time_logged'))['time_logged__sum']
+            timemap[user] = Ticket.objects.filter(project=self, assigned_to=user).aggregate(Sum('time_logged'))[
+                'time_logged__sum']
         return timemap
 
 
@@ -46,7 +46,7 @@ class Priority(models.Model):
 class Status(models.Model):
     name = models.CharField(max_length=32)
     is_default = models.BooleanField(default=False)
-    hide_by_default = models.BooleanField(default =True)
+    hide_by_default = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.name
@@ -56,17 +56,17 @@ class Status(models.Model):
 
 
 class Ticket(models.Model):
-    project = models.ForeignKey(Project, null=True, on_delete = models.CASCADE)
+    project = models.ForeignKey(Project, null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
     desc = models.TextField()
-    priority = models.ForeignKey(Priority, on_delete = models.CASCADE)
-    status = models.ForeignKey(Status, on_delete = models.CASCADE)
+    priority = models.ForeignKey(Priority, on_delete=models.CASCADE)
+    status = models.ForeignKey(Status, on_delete=models.CASCADE)
 
     creation_time = models.DateTimeField()
     update_time = models.DateTimeField()
 
-    created_by = models.ForeignKey(User, null=True, related_name='tickets_created', on_delete = models.CASCADE)
-    assigned_to = models.ForeignKey(User, null=True, related_name='tickets_assigned', on_delete = models.CASCADE)
+    created_by = models.ForeignKey(User, null=True, related_name='tickets_created', on_delete=models.CASCADE)
+    assigned_to = models.ForeignKey(User, null=True, related_name='tickets_assigned', on_delete=models.CASCADE)
 
     time_logged = models.FloatField(default=0)
 
@@ -78,8 +78,8 @@ class Ticket(models.Model):
 
 
 class TicketComment(models.Model):
-    ticket = models.ForeignKey(Ticket, on_delete = models.CASCADE)
-    commenter = models.ForeignKey(User, null=True, on_delete = models.CASCADE)
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+    commenter = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     text = models.TextField()
 
     update_time = models.DateTimeField()

@@ -1,13 +1,15 @@
 from datetime import datetime
-from django.shortcuts import render
-from django.http import HttpResponseRedirect, Http404
-from django.contrib.auth.models import User
-from .models import Priority, Status, Project, Ticket, TicketComment
-from django.shortcuts import get_object_or_404
-from django.core.paginator import Paginator, InvalidPage, EmptyPage
+
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.http import HttpResponseRedirect, Http404
+from django.shortcuts import get_object_or_404
+from django.shortcuts import render
+
+from .models import Priority, Status, Project, Ticket, TicketComment
 
 User = get_user_model()
 
@@ -16,7 +18,6 @@ try:
 except ImportError:
     from urllib import urlencode
 
-from simpleticket.utils import email_user
 
 @login_required
 def create(request):
@@ -26,21 +27,22 @@ def create(request):
     user_list = User.objects.all()
 
     return render(request, 'create.html', {'tab_users': user_list,
-                                              'priority_list': priority_list, 'status_list': status_list,
-                                              'project_list': project_list})
+                                           'priority_list': priority_list, 'status_list': status_list,
+                                           'project_list': project_list})
+
 
 @login_required
 def view(request, ticket_id=1):
     status = Status.objects.filter(name="open")
     ticket = get_object_or_404(Ticket, pk=ticket_id)
     if ticket.status.name == "closed":
-        raise(Http404("No such open ticket found."))
+        raise (Http404("No such open ticket found."))
     status_list = Status.objects.all()
 
     # Paginate Ticket_Comments
     ticket_comments = ticket.ticketcomment_set.order_by('-id')
     paginator = Paginator(ticket_comments, 10)
-    try: # Make sure page request is an int. If not, deliver first page.
+    try:  # Make sure page request is an int. If not, deliver first page.
         page = int(request.GET.get('page', '1'))
     except ValueError:
         page = 1
@@ -154,7 +156,7 @@ def view_all(request):
 
     # Paginate
     paginator = Paginator(tickets, 20)
-    try: # Make sure page request is an int. If not, deliver first page.
+    try:  # Make sure page request is an int. If not, deliver first page.
         page = int(request.GET.get('page', '1'))
     except ValueError:
         page = 1
@@ -188,19 +190,20 @@ def view_all(request):
     prev_link = request.path + '?' + get_params
 
     return render(request, 'view_all.html', {'tickets': tickets, 'filter': filter,
-                                                          'filter_message': filter_message, 'base_url': base_url,
-                                                          'next_link': next_link, 'prev_link': prev_link,
-                                                          'sort': sort_setting, 'order': order_setting,
-                                                          'show_closed': show_closed})
+                                             'filter_message': filter_message, 'base_url': base_url,
+                                             'next_link': next_link, 'prev_link': prev_link,
+                                             'sort': sort_setting, 'order': order_setting,
+                                             'show_closed': show_closed})
+
 
 @login_required
 def submit_ticket(request):
     ticket = Ticket()
-    ticket.project = Project.objects.get(pk=int(request.POST.get('project',False)))
+    ticket.project = Project.objects.get(pk=int(request.POST.get('project', False)))
     ticket.priority = Priority.objects.get(pk=int(request.POST['priority']))
     ticket.status = Status.objects.get(pk=int(request.POST['status']))
     anon = request.POST.get('post_as_anonymous')
-    if(anon):
+    if (anon):
         ticket.created_by = User.objects.get(username="pseudo")
     else:
         ticket.created_by = request.user
@@ -231,6 +234,7 @@ def submit_ticket(request):
     messages.success(request, "The complaint has been added.")
 
     return HttpResponseRedirect("/tickets/view/" + str(ticket.id) + "/")
+
 
 @login_required
 def submit_comment(request, ticket_id):
@@ -270,12 +274,13 @@ def submit_comment(request, ticket_id):
 
     return HttpResponseRedirect("/tickets/view/" + str(ticket.id) + "/")
 
+
 @login_required
 def update(request, ticket_id):
     ticket = get_object_or_404(Ticket, pk=ticket_id)
 
     active_user = request.user
-    if(not ticket.created_by == active_user):
+    if (not ticket.created_by == active_user):
         raise Http404("You are not authorized to update this ticket")
     else:
         pass
@@ -286,15 +291,16 @@ def update(request, ticket_id):
     users_list = User.objects.all()
 
     return render(request, 'update.html', {'ticket': ticket, 'tab_users': users_list,
-                                                    'priority_list': priority_list, 'status_list': status_list,
-                                                        'project_list': project_list})
+                                           'priority_list': priority_list, 'status_list': status_list,
+                                           'project_list': project_list})
+
 
 @login_required
 def update_ticket(request, ticket_id):
     ticket = get_object_or_404(Ticket, pk=ticket_id)
 
     active_user = request.user
-    if(not ticket.created_by == active_user):
+    if (not ticket.created_by == active_user):
         raise Http404("You are not authorized to update this ticket")
     else:
         pass
@@ -359,14 +365,15 @@ def update_ticket(request, ticket_id):
 
     return HttpResponseRedirect("/tickets/view/" + str(ticket.id) + "/")
 
+
 @login_required
 def delete_ticket(request, ticket_id):
     # Get the ticket
     ticket = get_object_or_404(Ticket, pk=ticket_id)
 
     active_user = request.user
-    if(not (active_user.is_staff or active_user.is_superuser)) \
-    and (not ticket.created_by == active_user):
+    if (not (active_user.is_staff or active_user.is_superuser)) \
+            and (not ticket.created_by == active_user):
         raise Http404("You are not authorized to delete this ticket")
     else:
         pass
@@ -379,6 +386,7 @@ def delete_ticket(request, ticket_id):
 
     messages.success(request, "The complaint has been deleted.")
     return HttpResponseRedirect("/tickets/")
+
 
 @login_required
 def delete_comment(request, comment_id):

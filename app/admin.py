@@ -1,24 +1,24 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+
 from .models import User, Complaint
 
 
 class UserAdmin(UserAdmin):
-
     fieldsets = [
         (None, {
             'fields': ['username', 'password']
-            }),
+        }),
         ('Personal info', {
             'fields': ['first_name', 'last_name', 'phone', 'email', 'image']
-            }),
+        }),
         ('Permissions', {
-            'fields': ['is_active', 'is_staff', 'is_superuser',]
-            }),
+            'fields': ['is_active', 'is_staff', 'is_superuser', ]
+        }),
     ]
 
-class ComplaintAdmin(admin.ModelAdmin):
 
+class ComplaintAdmin(admin.ModelAdmin):
     list_display = [
         'complaint_id',
         'title',
@@ -31,6 +31,7 @@ class ComplaintAdmin(admin.ModelAdmin):
         'title',
         'complaint',
     ]
+
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Complaint, ComplaintAdmin)

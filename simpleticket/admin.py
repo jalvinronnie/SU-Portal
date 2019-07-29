@@ -1,5 +1,6 @@
-from simpleticket.models import Project, Priority, Status, Ticket, TicketComment
 from django.contrib import admin
+
+from simpleticket.models import Project, Priority, Status, Ticket, TicketComment
 
 
 class TicketCommentInLine(admin.TabularInline):
@@ -24,13 +25,13 @@ class TicketAdmin(admin.ModelAdmin):
     model = Ticket
     inlines = [TicketCommentInLine]
 
-    def get_logger(self,Ticket):
-        if(Ticket.created_by.username == 'pseudo'):
-            return('anonymous')
+    def get_logger(self, Ticket):
+        if (Ticket.created_by.username == 'pseudo'):
+            return ('anonymous')
         else:
             username = Ticket.created_by.username
             name = Ticket.created_by.first_name + Ticket.created_by.last_name
-            return(username + ": " + name)
+            return (username + ": " + name)
 
     list_display = [
         'id',
