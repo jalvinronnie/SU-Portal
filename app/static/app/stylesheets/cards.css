@@ -5,25 +5,28 @@
     overflow: auto;
     width: 100vw;
 }
-#cards{
+
+#cards {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     padding-top: 100px;
     width: 80vw;
 }
+
 .carde {
     min-width: 300px;
     text-align: left;
     color: black;
     flex-grow: 1;
-    background-color: rgba(255,255,255,0.8);
+    background-color: rgba(255, 255, 255, 0.8);
     border-radius: 3px;
     min-height: 25.6vw;
     margin: 1px;
     width: 25.6vw;
     min-height: 25.6vh;
 }
+
 .content {
     display: flex;
     flex-direction: column;
@@ -31,32 +34,40 @@
     justify-content: center;
     align-items: center;
 }
+
 .content > img {
     max-height: 25.6vw;
     margin: 20px;
 }
+
 .name {
     margin: 10px;
 }
+
 .info {
     max-width: 90%;
 }
+
 .content a {
     color: black;
     font-weight: bold;
 }
+
 .title {
     text-transform: uppercase;
     font-weight: bold;
     font-size: 1.2em;
     padding: 2vw;
 }
+
 .morecontent span {
     display: none;
 }
+
 .morelink {
     display: block;
 }
+
 .social {
     position: relative;
     bottom: 0;
@@ -66,6 +77,7 @@
     justify-content: center;
     align-items: center;
 }
+
 .social svg {
     margin: 5px;
 }

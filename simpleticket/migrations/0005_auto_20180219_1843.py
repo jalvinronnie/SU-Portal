@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('simpleticket', '0004_auto_20180219_1841'),
     ]
